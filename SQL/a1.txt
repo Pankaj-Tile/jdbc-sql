@@ -1,0 +1,182 @@
+ass2
+
+create database ass2;
+use ass2;
+create table employee (em_id int,em_name varchar(20),em_join_date date, primary key (em_id));
+desc employee;
+create table emp_finance(pay_id int auto_increament,em_id int,em_salary int,em_contract date,foreign key(em_id) referances employee(em_id),primary key (pay_id));
+desc employee;
+desc emp_finance;
+insert into employee values(1,'ram','2020/09/15');
+insert into employee values(2,'kram','2020/09/02');
+insert into employee values(3,'sham','2021/09/11');
+select * from employee ;
+insert into emp finance values(1,1,2000,'2021/01/22');
+insert into emp finance values(null,3,4000,'2021/01/22');
+
+
+
+create table stud(sid int,name char(20),class char(10) age int,issued char(1));
+
+create table returned(sid int , bname char(20), bauthor varchar(30));
+
+insert into stud values(1,'Ram','11-a',17,'1');
+
+create table issued (sid int, bname char(20));
+
+alter table stud add bname char(20);
+
+
+
+ass 7 
+create database vid7;
+use database vid7;
+create table result(roll int(4),name varchar(20),class varchar(20))
+create table stud_mark(name varchar(20),marks int(4));
+show tables;
+desc stud_mark;
+desc result;
+insert into stud_mark values('har',1400),('ket',900),('sac',800);
+select * from stud_mark;
+select * from result;
+
+delimeter //
+create procedure proc_Grade(In rno int,out grade varchar(25))
+begin
+declare m int;
+select marks into m from stud_marks where name =(select name form result where roll=rno;
+if m>=990 and m<=1500 then
+select 'Distingtion' into grade;
+update result set class='Distingtion' where roll=rno;
+elseif m>=900 and m<=989 then 
+select 'First' into grade;
+update result set class='First Class' where roll=rno;
+elseif m>=825 and m<=899 then 
+select 'Higher Second Class' into grade;
+update result set class='Higher Second Class' where roll=rno;
+else
+select '--' into grade;
+update result set class='--' where roll=rno;
+end if;
+end;
+//
+delimeter //
+create funtion func_grade(rno int)
+return varchar(25)
+deterministic
+begin
+declare grade varchar(20);
+call proc_Grade(rno,grade);
+return grade;
+end;
+//
+select func_Grade(1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exp mongo 1
+
+db.creteCollection("library");
+db.library.insert({"bid":1,"name":"C++"});
+db.library.insert({"bid":2,"name":"java"});
+db.library.insertOne({"bid":3,"name":"python"});
+db.library.find();
+db.library.find().pretty();
+db.library.update({"name":"python"},{$set:{"name":"Python3"}});
+db.library.find();
+db.library.remove({"bid":1});
+db.library.find();
+db.library.find({"name":"java"});
+db.library.insert({"bid":4,"name":"java","desc":"fack book"});
+db.library.find({"name":"java"});
+db.library.find({$and:[{"name":"java"},{"desc":"fack book"}]});
+db.library.find({$or:[{"name":"java"},{"desc":"fack book"}]});
+db.library.find({$or:[{"name":"java"},{"name":"Python3"}]});
+db.library.insert({"bid":5,"name":"my story","cost":500});
+db.library.insert({"bid":5,"name":"my story 2","cost":800});
+db.library.insert({"bid":5,"name":"my story 2 beta","cost":50});
+db.library.find({"cost":{$gte:100}})
+db.library.find({"cost":{$in:[100,200,300,400,500]}})
+db.library.find({"cost":{$nin:[100,200,300,400,500]}})
+
+//this funtion causes error in my case
+db.library.save({"_id":ObjectId("123456789abcdef123456789"),"bid":6,"name":"save query","cost":10000}); 
+db.library.find();
+
+db.library.save({"_id":ObjectId("123456789abcdef123456789"),"bid":6,"name":"save query","cost":10000});
+db.library.find();
+
+
+
+exp mango 2
+
+use  ass2
+db.ass2.insert({rollno:1,name:'navin',subject:'oop',marks:70});
+db.ass2.insert({rollno:2,name:'anusha',subject:'dsa',marks:75});
+db.ass2.insert({rollno:3,name:'ravi',subject:'toc',marks:69});
+db.ass2.insert({rollno:4,name:'veena',subject:'C++',marks:70});
+db.ass2.insert({rollno:5,name:'veena',subject:'CN',marks:80});
+db.ass2.insert({rollno:6,name:'geeta',subject:'CN',marks:90});
+
+db.ass2.find();
+
+db.ass2.createIndex({name:1});
+db.ass2.getIndexes();
+db.ass2.find().sort({name:1});
+db.ass2.find().sort({name:-1});
+db.ass2.find({name:'navin'})
+db.ass2.ensureIndex({rollno:1},{unique:true});
+db.ass2.insert({rollno:6,name:'geeta',subject:'CN',marks:90});
+
+db.ass2.aggregate([{$group:{_id:"$subject",marks:{$min:"$marks"}}}])
+
+//select subject, min(marks) from ass group by subject;
+
+db.ass2.aggregate([{$group:{_id:"$subject",marks:{$max:"$marks"}}}])
+db.ass2.aggregate([{$group:{_id:"$subject",marks:{$avg:"$marks"}}}])
+
+db.ass2.aggregate([{$group:{_id:"$subject",marks:{$first:"$marks"}}}])
+db.ass2.aggregate([{$group:{_id:"$subject",marks:{$last:"$marks"}}}])
+db.ass2.aggregate([{$group:{_id:"$subject",marks:{$sum:"$marks"}}}])
+db.ass2.aggregate([{$group:{_id:"$subject",count:{$sum:1}}}])
+db.ass2.aggregate([{$match:{subject:"CN"}},{$group:{_id:"$subject",count:{$sum:1}}}])
+
+
+
+
+exp mongo 3
+
+
+use ass4
+db.stud.insert({name:'amit',marks:80})
+db.stud.insert({name:'shreya',marks:40})
+db.stud.insert({name:'amit',marks:90})
+db.stud.insert({name:'neha',marks:80})
+db.stud.insert({name:'neha',marks:35})
+
+db.stud.find();
+
+db.stud.mapReduce(
+function(){ emit(this.name,1)},
+function(key,values){ return Array.sum(values)},
+{out:"name_total"});
+
+
+
+
+
+
